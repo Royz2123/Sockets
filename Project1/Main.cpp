@@ -1,5 +1,8 @@
+#include <typeinfo>
+
 #include "Server.h"
 #include "Client.h"
+#include "Poller.h"
 
 #define CLIENT_MODE 0
 #define SERVER_MODE 1
@@ -45,13 +48,37 @@ int main(int argc, char **argv)
 	else if (mode == SERVER_MODE)
 	{
 		// Create a server socket and recv something
-		// TODO: Asynchronous
 		ServerSocket sock = ServerSocket(&address, addr_len);
-		ClientSocket acceptedSocket = ClientSocket(sock.acceptConnection());
 
-		// Quick convo
-		acceptedSocket.read();
-		acceptedSocket.write("hi");
+		// Create an async poller
+		Selecter poller = Selecter((AsyncSocket*)&sock);
+
+		while (true)
+		{
+			poller.poll();
+
+			// handle readers
+			for (AsyncSocket* currSock : poller.getReaders())
+			{
+				// handle listener sockets
+				if (typeid(*currSock) == typeid(ServerSocket))
+				{
+					SOCKET sock = ((ServerSocket*)currSock)->acceptConnection();
+					poller.addPollable((AsyncSocket*)&ClientSocket(sock));
+				}
+				// handle all other sockets read
+				else
+				{
+					currSock->read();
+				}
+			}
+
+			// handle writers
+			for (AsyncSocket* currSock : poller.getWriters())
+			{	
+				currSock->write();	
+			}
+		}
 	}
 	else
 	{

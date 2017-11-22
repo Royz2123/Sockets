@@ -63,3 +63,18 @@ int AsyncSocket::write(char sendbuf[])
 	}
 	return status;
 }
+
+SOCKET AsyncSocket::getSocket()
+{
+	return this->socketObject;
+}
+
+bool AsyncSocket::isRead()
+{
+	return true;
+}
+
+bool AsyncSocket::isWrite()
+{
+	return true;
+}

@@ -26,12 +26,14 @@ public:
 	int read();
 	int write(char sendbuf[]);
 
+	SOCKET getSocket();
+	bool isRead();
+	bool isWrite();
 protected:
 	SOCKET socketObject;
 	const static int domain = AF_INET;
 	const static int type = SOCK_STREAM;
 	const static int protocol = IP;
-
 };
 
 
