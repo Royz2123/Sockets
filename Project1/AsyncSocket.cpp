@@ -51,10 +51,18 @@ int AsyncSocket::read()
 	return status;
 }
 
-int AsyncSocket::write(char sendbuf[])
+void AsyncSocket::setText(string str)
 {
+	this->toSend = str;
+}
+
+int AsyncSocket::write()
+{
+	const char* sendbuf = (this->toSend).c_str();
 	int status = send(this->socketObject, sendbuf, (int)strlen(sendbuf), 0);
 	
+	// TODO: Not everything was sent
+
 	if (status == SOCKET_ERROR) {
 		std::cout << "Shutdown failed with error:" << WSAGetLastError() << std::endl;
 		closesocket(this->socketObject);

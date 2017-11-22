@@ -24,12 +24,16 @@ public:
 	~AsyncSocket();
 
 	int read();
-	int write(char sendbuf[]);
+	int write();
 
+	void AsyncSocket::setText(string str);
 	SOCKET getSocket();
 	bool isRead();
 	bool isWrite();
 protected:
+	// buf we need to send
+	string toSend;
+
 	SOCKET socketObject;
 	const static int domain = AF_INET;
 	const static int type = SOCK_STREAM;

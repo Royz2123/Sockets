@@ -112,6 +112,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp" />
+    <ClCompile Include="Poller.cpp" />
     <ClCompile Include="server.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="AsyncSocket.cpp" />
@@ -119,6 +120,7 @@
   <ItemGroup>
     <ClInclude Include="AsyncSocket.h" />
     <ClInclude Include="Client.h" />
+    <ClInclude Include="Poller.h" />
     <ClInclude Include="Server.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

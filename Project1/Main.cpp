@@ -35,7 +35,7 @@ int main(int argc, char **argv)
 		str_addr = argv[2];
 	}
 	struct sockaddr address;
-	inet_pton(AF_INET, "192.0.2.33", &(address));
+	inet_pton(AF_INET, str_addr.c_str(), &(address));
 	int addr_len = str_addr.length();
 
 	// Client Mode
@@ -43,12 +43,15 @@ int main(int argc, char **argv)
 	{
 		// Create a client socket and send "hello"
 		ClientSocket sock = ClientSocket(&address, addr_len);
-		sock.write("hello");
+		sock.setText("hello");
+		sock.write();
 	}
 	else if (mode == SERVER_MODE)
 	{
 		// Create a server socket and recv something
 		ServerSocket sock = ServerSocket(&address, addr_len);
+
+		cout << "hello";
 
 		// Create an async poller
 		Selecter poller = Selecter((AsyncSocket*)&sock);
